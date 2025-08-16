@@ -1,0 +1,148 @@
+.header {
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  position: sticky;
+  top: 0;
+  height: var(--header-height, 64px);
+  display: flex;
+  align-items: center; /* ensure direct children are vertically centered */
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; /* remove vertical padding so content centers inside header height */
+  max-width: 100%;
+  width: 100%;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.app-title svg {
+  color: #667eea;
+}
+
+.chat-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  background: #f0fff4;
+  border: 1px solid #9ae6b4;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #276749;
+}
+
+.status-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #48bb78;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px; /* slightly smaller vertical padding to remain visually centered */
+  background: #f8fafc;
+  border-radius: 20px;
+  color: #4a5568;
+  font-size: 14px;
+}
+
+.user-avatar {
+  width: 24px;
+  height: 24px;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-email {
+  font-weight: 500;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sign-out-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #718096;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sign-out-button:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+  color: #4a5568;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 10px 16px;
+  }
+
+  .header-left {
+    gap: 12px;
+  }
+
+  .app-title {
+    font-size: 18px;
+  }
+
+  .chat-status {
+    display: none;
+  }
+
+  .user-email {
+    display: none;
+  }
+
+  .sign-out-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .sign-out-button span {
+    display: none;
+  }
+}

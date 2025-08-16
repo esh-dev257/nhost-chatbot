@@ -1,42 +1,75 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+}
+
+:root {
+  --header-height: 64px; /* adjust if your header is taller */
+}
+
+.app-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* allow children to overflow horizontally if needed */
+}
+
+.no-chat-selected {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+
+.no-chat-content {
   text-align: center;
+  color: #718096;
+  max-width: 400px;
+  padding: 40px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.no-chat-content svg {
+  margin-bottom: 24px;
+  opacity: 0.6;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.no-chat-content h2 {
+  margin: 0 0 12px 0;
+  color: #2d3748;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.no-chat-content p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .app-body {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+
+  .no-chat-content {
+    padding: 20px;
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .no-chat-content h2 {
+    font-size: 24px;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .no-chat-content p {
+    font-size: 14px;
+  }
 }
