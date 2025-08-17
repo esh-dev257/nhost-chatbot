@@ -18,6 +18,7 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
     skip: !chatId,
   });
   const [text, setText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const [insertUserMessage] = useMutation(INSERT_USER_MESSAGE);
   const [sendMessage] = useMutation(SEND_MESSAGE_ACTION);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -25,12 +26,28 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
 
   const messages: Message[] = data?.messages || [];
 
+  const lastSender = messages[messages.length - 1]?.sender;
+  const shouldShowTyping = isTyping && (!messages.length || lastSender === "user");
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (shouldShowTyping) scrollToBottom();
+  }, [shouldShowTyping]);
+
+  // Hide typing as soon as any non-user message arrives
+  useEffect(() => {
+    if (!messages.length) return;
+    const last = messages[messages.length - 1];
+    if (last.sender && last.sender !== "user") {
+      setIsTyping(false);
+    }
   }, [messages]);
 
   const adjustTextareaHeight = () => {
@@ -50,11 +67,13 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
     if (!content) return;
 
     setText("");
+    setIsTyping(true);
     try {
       await insertUserMessage({ variables: { chat_id: chatId, content } });
       await sendMessage({ variables: { chat_id: chatId, content } });
     } catch (error) {
       console.error("Error sending message:", error);
+      setIsTyping(false);
     }
   };
 
@@ -80,7 +99,7 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
             <div className="loading-spinner" />
             <span>Loading messages...</span>
           </div>
-        ) : messages.length === 0 ? (
+        ) : messages.length === 0 && !shouldShowTyping ? (
           <div className="messages-empty">
             <div className="welcome-message">
               <svg
@@ -145,6 +164,35 @@ export function ChatWindow({ chatId }: ChatWindowProps) {
                 </div>
               </div>
             ))}
+
+            {shouldShowTyping && (
+              <div className="message assistant">
+                <div className="message-avatar">
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                    <path d="M2 17l10 5 10-5" />
+                    <path d="M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+                <div className="message-content">
+                  <div className="message-bubble typing">
+                    <div className="typing-indicator" aria-label="Assistant is typing">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                  <div className="message-time">Assistant is typing…</div>
+                </div>
+              </div>
+            )}
           </div>
         )}
         <div ref={messagesEndRef} />

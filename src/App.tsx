@@ -6,6 +6,13 @@ import "./App.css";
 export default function App() {
   const { isAuthenticated } = useAuthenticationStatus();
   const [chatId, setChatId] = useState<string | undefined>(undefined);
+  // Add state to track sidebar visibility on mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  // Toggle function for the hamburger menu
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
   if (!isAuthenticated) {
     return <Auth />;
@@ -13,9 +20,20 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header selectedChatId={chatId} />
+      {/* Pass toggle function and current state to Header */}
+      <Header 
+        selectedChatId={chatId} 
+        toggleSidebar={toggleSidebar} 
+        isSidebarOpen={isSidebarOpen} 
+      />
       <div className="app-body">
-        <ChatList onSelect={setChatId} selectedId={chatId} />
+        {/* Pass isOpen state to ChatList */}
+        <ChatList 
+          onSelect={setChatId} 
+          selectedId={chatId} 
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
         <div className="main-content">
           {chatId ? (
             <ChatWindow chatId={chatId} />

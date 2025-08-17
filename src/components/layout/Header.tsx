@@ -1,11 +1,15 @@
+// Header.jsx with hamburger menu
 import { useSignOut, useUserEmail } from "@nhost/react";
+import { useState } from "react";
 import "./Header.css";
 
+// Update the interface in Header.tsx
 interface HeaderProps {
   selectedChatId?: string;
+  toggleSidebar: () => void;  // Add this
+  isSidebarOpen: boolean;     // Add this
 }
-
-export function Header({ selectedChatId }: HeaderProps) {
+export function Header({ selectedChatId, toggleSidebar, isSidebarOpen }: HeaderProps) {
   const { signOut } = useSignOut();
   const email = useUserEmail();
 
@@ -13,6 +17,36 @@ export function Header({ selectedChatId }: HeaderProps) {
     <header className="header">
       <div className="header-content">
         <div className="header-left">
+          <button 
+            className="menu-toggle" 
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? "Close sidebar" : "Open sidebar"}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {isSidebarOpen ? (
+                <>
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </>
+              ) : (
+                <>
+                  <line x1="3" y1="12" x2="21" y2="12"></line>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                  <line x1="3" y1="18" x2="21" y2="18"></line>
+                </>
+              )}
+            </svg>
+          </button>
+          
           <h1 className="app-title">
             <svg
               width="24"
@@ -27,6 +61,7 @@ export function Header({ selectedChatId }: HeaderProps) {
             </svg>
             ChatBot AI
           </h1>
+          
           {selectedChatId && (
             <div className="chat-status">
               <span className="status-indicator active" />
@@ -70,7 +105,7 @@ export function Header({ selectedChatId }: HeaderProps) {
               <polyline points="16,17 21,12 16,7" />
               <line x1="21" y1="12" x2="9" y2="12" />
             </svg>
-            Sign out
+            <span>Sign out</span>
           </button>
         </div>
       </div>
