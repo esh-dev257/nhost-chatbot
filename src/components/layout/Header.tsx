@@ -1,6 +1,5 @@
 // Header.jsx with hamburger menu
 import { useSignOut, useUserEmail } from "@nhost/react";
-import { useState } from "react";
 import "./Header.css";
 
 // Update the interface in Header.tsx
